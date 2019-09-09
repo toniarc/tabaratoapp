@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tabaratoapp/resources/authentication_api_provider.dart';
+import 'package:tabaratoapp/resources/authentication_service.dart';
 
 class SplashScreenPage extends StatefulWidget {
 
@@ -13,7 +13,7 @@ class SplashScreenPage extends StatefulWidget {
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
 
-  AuthenticationAPIProvider auth = new AuthenticationAPIProvider();
+  AuthenticationService auth = new AuthenticationService();
 
   @override
   void didChangeDependencies() {
@@ -22,16 +22,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, 'login');      
     });
-
-    /*
-    Future<User> user = auth.login('admin', '123456');
-    user.then( (user) => {
-      if(user.hasToken()){
-        Navigator.pushReplacementNamed(context, '/')
-      } else {
-        Navigator.pushReplacementNamed(context, '/login')
-      }
-    });*/
 
   }
 

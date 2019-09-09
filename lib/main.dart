@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tabaratoapp/provider/authentication_model.dart';
+import 'package:tabaratoapp/provider/carrinho_model.dart';
 import 'package:tabaratoapp/screen/home_page.dart';
 import 'package:tabaratoapp/screen/login_page.dart';
+import 'package:tabaratoapp/screen/produto_form_page.dart';
 import 'package:tabaratoapp/screen/splash_screen_page.dart';
 
 void main() {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-    .then((_) => {
-      runApp(ChangeNotifierProvider(
-        builder: (context) => AuthenticationModel(),
-        child: TaBaratoApp(),
-      ))
+    .then((_) {
+      runApp(MultiProvider(
+        providers: [
+          ChangeNotifierProvider(builder: (context) => AuthenticationModel()),
+          ChangeNotifierProvider(builder: (context) => CarrinhoComprasModel())
+        ],
+        child: TaBaratoApp()
+      ));
     });
 
 }
@@ -32,7 +37,8 @@ class TaBaratoApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(title: 'Ta Barato?'),
         'splash_screen': (context) =>  SplashScreenPage(),
-        'login': (context) => LoginPage()
+        'login': (context) => LoginPage(),
+        'produto_form': (context) => ProdutoFormPage()
       },
     );
   }
