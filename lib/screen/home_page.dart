@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   
   String result = "";
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future<String> _scanBarcode() async {
     try {
@@ -78,11 +79,27 @@ class _HomePageState extends State<HomePage> {
     CarrinhoComprasModel carrinhoModel = Provider.of<CarrinhoComprasModel>(context);
     
     return Scaffold(
-      appBar: AppBarDefault(),
+      key: _scaffoldKey,
+      appBar: AppBarDefault(scaffoldKey: _scaffoldKey,),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+          ],
+        ),
+      ),
+      drawer: new Drawer(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text("Produtos"),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ProdutoFormPage()));
+              },
+            ),
           ],
         ),
       ),

@@ -1,21 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart';
 import 'package:tabaratoapp/exception/produto_nao_encontrado_exception.dart';
 import 'package:tabaratoapp/model/produto.dart';
+import 'package:tabaratoapp/resources/abstract_service.dart';
 
-class CarrinhoComprasService {
+class CategoriaService extends AbstractService {
 
-  List<Produto> _produtos = [];
-
-  Client client = new Client();
-
-  final storage = new FlutterSecureStorage();
-
-  String _baseUrl = 'https://tabarato-service.herokuapp.com/service';
-
-  Future<Produto> buscar(Produto filtro) async {
+  Future<List<Categoria>> buscar({Categoria filtro}) async {
 
     Map<String, String> _headers = new Map();
     _headers['Content-Type'] = 'application/json';
@@ -23,7 +14,7 @@ class CarrinhoComprasService {
     String token = await storage.read(key: 'token');
     _headers['Authorization'] = 'Bearer ' + token;
 
-    String url = '$_baseUrl/produto/barcode/' + filtro.barcode.toString();
+    String url = '$baseUrl/categoria';
     final response = await client.get(url, headers: _headers);
     if (response.statusCode == 200) {
 
@@ -31,9 +22,15 @@ class CarrinhoComprasService {
         throw ProdutoNaoEncontradoException();
       }
 
-      return Produto.fromJson(json.decode(response.body));
+      List<Categoria> categorias = [];
+      List<dynamic> parsedJson = json.decode(response.body);
+      for (int i = 0; i < parsedJson.length; i++) {
+        Categoria c = Categoria.fromJson(parsedJson[i]);
+        categorias.add(c);
+      }
+      return categorias;
     } else {
-      throw Exception('Falha ao pesquisar produto');
+      throw Exception('Falha ao pesquisar categorias');
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tabaratoapp/resources/authentication_service.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -19,8 +20,16 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, 'login');      
+    Future.delayed(const Duration(seconds: 2), () async {
+      final storage = new FlutterSecureStorage();
+      String token = await storage.read(key: 'token');
+      
+      if(token.isEmpty){
+        Navigator.pushReplacementNamed(context, 'login');      
+      } else {
+        Navigator.pushReplacementNamed(context, '/');      
+      }
+      
     });
 
   }

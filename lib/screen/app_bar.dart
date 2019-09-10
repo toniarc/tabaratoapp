@@ -3,11 +3,12 @@ import 'package:flutter/widgets.dart';
 
 class AppBarDefault extends AppBar {
   
-  AppBarDefault() : super(
+  AppBarDefault({GlobalKey<ScaffoldState> scaffoldKey}) : super(
     title: Center(
       child: Text('Ta Barato?!')
     ),
-    leading: Image.asset('images/resources_icon.png'),
-    backgroundColor: Colors.black
+    leading: new IconButton(icon: new Icon(Icons.dehaze),
+            onPressed: () => scaffoldKey.currentState.openDrawer()),
+    backgroundColor: Colors.black,
   );
 }
